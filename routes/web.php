@@ -13,6 +13,6 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/',[AdminController::class,'dashboard'])->name('dashboard');
-Route::get('/students/create',[AdminController::class,'createStudent'])->name('students.create');
-Route::post('/students/store',[AdminController::class,'storeStudent'])->name('students.store');
+Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+Route::get('/students/create', [AdminController::class, 'create'])->name('students.create');
+Route::post('/students', [AdminController::class, 'store'])->name('students.store');
