@@ -16,14 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->integer('age');
             $table->integer('grade');
-            $table->integer('Contact_Number');
+            $table->string('Contact_Number');
             $table->string('email');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+   
     public function down(): void
     {
         Schema::dropIfExists('student');
