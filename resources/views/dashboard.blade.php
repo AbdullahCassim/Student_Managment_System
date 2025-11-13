@@ -6,27 +6,33 @@
   <title>Student Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .navbar {
-      margin-bottom: 30px;
-    }
-    .card {
-      border-radius: 12px;
-    }
-  </style>
 </head>
 <body>
 
-  
-  <nav class="navbar navbar-dark bg-dark shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Student Management System</a>
-    </div>
-  </nav>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">SMS System</a>
 
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+  
   
   <div class="container">
 
@@ -57,24 +63,37 @@
                 <th>Grade</th>
                 <th>Contact</th>
                 <th>Email</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              @forelse ($students as $student)
-                <tr>
-                  <td>{{ $student->id }}</td>
-                  <td>{{ $student->name }}</td>
-                  <td>{{ $student->age }}</td>
-                  <td>{{ $student->grade }}</td>
-                  <td>{{ $student->contact_number }}</td>
-                  <td>{{ $student->email }}</td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="6" class="text-center text-muted">No students found</td>
-                </tr>
-              @endforelse
-            </tbody>
+              <tbody>
+      @forelse($students as $student)
+          <tr>
+              <td>{{ $student->id }}</td>
+              <td>{{ $student->name }}</td>
+              <td>{{ $student->age }}</td>
+              <td>{{ $student->grade }}</td>
+              <td>{{ $student->contact_number }}</td>
+              <td>{{ $student->email }}</td>
+              <td>
+                  <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                  <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline-block;">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm"
+                          onclick="return confirm('Are you sure you want to delete this student?')">
+                          Delete
+                      </button>
+                  </form>
+              </td>
+          </tr>
+      @empty
+          <tr>
+              <td colspan="7" class="text-center">No students found</td>
+          </tr>
+      @endforelse
+  </tbody>
           </table>
         </div>
       </div>
@@ -85,3 +104,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+  
+  
+  
+

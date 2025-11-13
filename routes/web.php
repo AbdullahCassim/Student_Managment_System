@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +17,40 @@ use App\Http\Controllers\AdminController;
 Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 Route::get('/students/create', [AdminController::class, 'create'])->name('students.create');
 Route::post('/students', [AdminController::class, 'store'])->name('students.store');
+
+Route::get('/students/{id}/edit', [AdminController::class, 'edit'])->name('students.edit');
+Route::put('/students/{id}', [AdminController::class, 'update'])->name('students.update');
+
+Route::delete('/students/{id}', [AdminController::class, 'destroy'])->name('students.destroy');
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // Only teachers can add/edit/delete
+    Route::middleware(['teacher'])->group(function () {
+        Route::get('/students/create', [AdminController::class, 'create'])->name('students.create');
+        Route::post('/students', [AdminController::class, 'store'])->name('students.store');
+        Route::get('/students/{id}/edit', [AdminController::class, 'edit'])->name('students.edit');
+        Route::put('/students/{id}', [AdminController::class, 'update'])->name('students.update');
+        Route::delete('/students/{id}', [AdminController::class, 'destroy'])->name('students.destroy');
+    });
+
+});
+
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
+Route::get('/teacher/dashboard', function () {
+    return view('teacher.dashboard');
+})->name('teacher.dashboard');
+
+Route::get('/student/dashboard', function () {
+    return view('student.dashboard');
+})->name('student.dashboard');
+
