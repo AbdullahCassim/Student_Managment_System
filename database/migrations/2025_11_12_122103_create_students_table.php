@@ -13,8 +13,7 @@ return new class extends Migration
             $table->integer('age');
             $table->integer('grade');
             $table->string('contact_number');
-            $table->string('email');
-            $table->timestamps(); 
+            $table->string('email'); 
         });
     }
 

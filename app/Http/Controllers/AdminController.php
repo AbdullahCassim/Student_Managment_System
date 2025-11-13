@@ -3,29 +3,28 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Student;
 
 class AdminController extends Controller
 {
-    // Dashboard - show all students
+    
     public function dashboard()
     {
         $students = Student::all();
         return view('dashboard', compact('students'));
     }
 
-    // Show form to add a new student
+        
     public function create()
+    {
+        return view('students.create'); 
+    }
 
-{
-    return view('createstudent');
-}
-
-
-    // Store a new student in the database
     public function store(Request $request)
     {
-        $request->validate([
+      
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'age' => 'required|integer',
             'grade' => 'required|integer',
@@ -33,8 +32,10 @@ class AdminController extends Controller
             'email' => 'required|email|unique:students,email',
         ]);
 
-        Student::create($request->all());
+       
+        Student::create($validated);
 
-        return redirect()->route('dashboard')->with('success', 'Student created successfully.');
+       
+        return redirect()->route('dashboard')->with('success', 'Student added successfully!');
     }
 }
