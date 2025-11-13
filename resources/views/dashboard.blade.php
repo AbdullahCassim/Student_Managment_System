@@ -57,24 +57,37 @@
                 <th>Grade</th>
                 <th>Contact</th>
                 <th>Email</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              @forelse ($students as $student)
-                <tr>
-                  <td>{{ $student->id }}</td>
-                  <td>{{ $student->name }}</td>
-                  <td>{{ $student->age }}</td>
-                  <td>{{ $student->grade }}</td>
-                  <td>{{ $student->contact_number }}</td>
-                  <td>{{ $student->email }}</td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="6" class="text-center text-muted">No students found</td>
-                </tr>
-              @endforelse
-            </tbody>
+              <tbody>
+      @forelse($students as $student)
+          <tr>
+              <td>{{ $student->id }}</td>
+              <td>{{ $student->name }}</td>
+              <td>{{ $student->age }}</td>
+              <td>{{ $student->grade }}</td>
+              <td>{{ $student->contact_number }}</td>
+              <td>{{ $student->email }}</td>
+              <td>
+                  <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                  <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline-block;">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm"
+                          onclick="return confirm('Are you sure you want to delete this student?')">
+                          Delete
+                      </button>
+                  </form>
+              </td>
+          </tr>
+      @empty
+          <tr>
+              <td colspan="7" class="text-center">No students found</td>
+          </tr>
+      @endforelse
+  </tbody>
           </table>
         </div>
       </div>
@@ -85,3 +98,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+  
+  
+  
+

@@ -18,17 +18,17 @@ class AdminController extends Controller
         
     public function create()
     {
-        return view('students.create'); 
+        return view('createstudent'); 
     }
 
     public function store(Request $request)
     {
       
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:50',
             'age' => 'required|integer',
             'grade' => 'required|integer',
-            'contact_number' => 'required|numeric',
+            'contact_number' => 'required|string|max:20',
             'email' => 'required|email|unique:students,email',
         ]);
 
@@ -38,4 +38,34 @@ class AdminController extends Controller
        
         return redirect()->route('dashboard')->with('success', 'Student added successfully!');
     }
+    public function edit($id)
+    {
+        $student = Student::findOrFail($id);
+        return view('edit', compact('student'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'required|integer',
+            'grade' => 'required|integer',
+            'contact_number' => 'required|numeric',
+            'email' => 'required|email|unique:students,email,' . $id,
+        ]);
+
+        $student = Student::findOrFail($id);
+        $student->update($validated);
+
+        return redirect()->route('dashboard')->with('success', 'Student updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Student deleted successfully!');
+    }
+
 }
